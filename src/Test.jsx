@@ -3,9 +3,9 @@ import { Question } from "./Question";
 import "./Test.css";
 
 const data = [
-  { id: 1, question: "2+2?", answer: 4 },
-  { id: 2, question: "5+5?", answer: 10 },
-  { id: 3, question: "20-10?", answer: 10 }
+  { id: 1, question: "2+2?", answer: 4, userAnswer: "" },
+  { id: 2, question: "5+5?", answer: 10, userAnswer: "" },
+  { id: 3, question: "20-10?", answer: 10, userAnswer: "" }
 ];
 
 const initialAnswers = data.reduce((acc, el) => {
@@ -18,7 +18,6 @@ export const Test = () => {
   const [answers, setAnswers] = React.useState(initialAnswers);
   const [isPassed, setIsPassed] = React.useState(false);
   const [userAnswer, setUserAnswer] = React.useState("");
-  console.log(userAnswer);
   const handleIncrease = () => setStep(prevStep => prevStep + 1);
   const handleDecrease = () => setStep(prevStep => prevStep - 1);
   const handlePassTest = () => setIsPassed(true);
@@ -29,6 +28,17 @@ export const Test = () => {
 
   const handleChangeIsFilled = questionObj => {
     setAnswers({ ...answers, ...questionObj });
+    console.log(answers);
+  };
+
+  const handleGetUserAnswer = usersAnswers => {
+    setItems(items.forEach((el)=>{
+      console.log(el.userAnswer)
+      el.userAnswer = usersAnswers
+      return el
+    }));
+
+    console.log(items);
   };
 
   React.useEffect(() => {
@@ -40,7 +50,7 @@ export const Test = () => {
       {!isPassed ? (
         <>
           <Question
-            onUserAnswer={setUserAnswer}
+            onUserAnswer={handleGetUserAnswer}
             onChangeIsFilled={handleChangeIsFilled}
             item={{ ...data[step] }}
           />
@@ -49,7 +59,7 @@ export const Test = () => {
           ) : (
             <div></div>
           )}
-          {step !== items.length - 1 ? (
+          {step !== 4 ? (
             <button onClick={handleIncrease}>Вперед</button>
           ) : (
             <div></div>
@@ -61,7 +71,7 @@ export const Test = () => {
             {items.map(i => (
               <div>
                 <div> {i.question} </div>
-                <div>{userAnswer}</div>
+                <div>{i.userAnswer}</div>
               </div>
             ))}
           </div>
