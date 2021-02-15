@@ -8,79 +8,73 @@ const data = [
   { id: 3, question: "20-10?", answer: 10, userAnswer: "" }
 ];
 
-const initialAnswers = data.reduce((acc, el) => {
-  return { ...acc, [el.id]: false };
+const initialItems = data.reduce((acc, el) => {
+  return { ...acc, [el.id]: el };
 }, {});
 
 export const Test = () => {
   const [step, setStep] = React.useState(0);
-  const [items, setItems] = React.useState(data);
-  const [answers, setAnswers] = React.useState(initialAnswers);
+  const [items, setItems] = React.useState(initialItems);
   const [isPassed, setIsPassed] = React.useState(false);
-  const [userAnswer, setUserAnswer] = React.useState("");
+
   const handleIncrease = () => setStep(prevStep => prevStep + 1);
   const handleDecrease = () => setStep(prevStep => prevStep - 1);
   const handlePassTest = () => setIsPassed(true);
 
-  const isDisabled = Object.keys(answers).some(a => {
-    return !answers[a];
-  });
-
-  const handleChangeIsFilled = questionObj => {
-    setAnswers({ ...answers, ...questionObj });
-    console.log(answers);
+  const handleGetUserAnswer = userAnswer => {
+    setItems({ ...items, ...userAnswer });
   };
 
-  const handleGetUserAnswer = usersAnswers => {
-    setItems(items.forEach((el)=>{
-      console.log(el.userAnswer)
-      el.userAnswer = usersAnswers
-      return el
-    }));
-
-    console.log(items);
+  const defineCurrentItem = d => {
+    return items[d.id];
   };
 
-  React.useEffect(() => {
-    setItems(data);
-  }, []);
+  const isAllQuestionsAnswer = Object.keys(items).every(
+    item => !!items[item].userAnswer
+  );
 
   return (
     <div>
       {!isPassed ? (
         <>
-          <Question
-            onUserAnswer={handleGetUserAnswer}
-            onChangeIsFilled={handleChangeIsFilled}
-            item={{ ...data[step] }}
-          />
-          {step !== 0 ? (
-            <button onClick={handleDecrease}>Назад</button>
-          ) : (
-            <div></div>
-          )}
-          {step !== 4 ? (
+          {data.map((d, idx) => (
+            <>
+              {idx === step && (
+                <Question
+                  onUserAnswer={handleGetUserAnswer}
+                  item={defineCurrentItem(d)}
+                />
+              )}
+            </>
+          ))}
+
+          {!!step && <button onClick={handleDecrease}>Назад</button>}
+          {step !== data.length - 1 && (
             <button onClick={handleIncrease}>Вперед</button>
-          ) : (
-            <div></div>
           )}
         </>
       ) : (
-        <>
-          <div>
-            {items.map(i => (
+        <div>
+          {data.map(d => {
+            const currentItem = defineCurrentItem(d);
+            const textPrefix = `Ваш ответ: ${currentItem.userAnswer}, `;
+            const isRight = currentItem.answer == currentItem.userAnswer;
+            return (
               <div>
-                <div> {i.question} </div>
-                <div>{i.userAnswer}</div>
+                <div> {currentItem.question} </div>
+                <div className={isRight ? "right" : "wrong"}>
+                  {textPrefix}
+                  {isRight
+                    ? "правильно"
+                    : `не правильно, правильный ответ ${currentItem.answer}`}
+                </div>
               </div>
-            ))}
-          </div>
-        </>
+            );
+          })}
+        </div>
       )}
-      {!isDisabled ? (
+      {isAllQuestionsAnswer && (
         <button onClick={handlePassTest}>Проверить ответы</button>
-      ) : (
-        <div></div>
       )}
     </div>
   );

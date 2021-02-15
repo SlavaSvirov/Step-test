@@ -1,22 +1,18 @@
 import React from "react";
 
-export const Question = ({ item, onChangeIsFilled, onUserAnswer }) => {
-  // const isValid = item.answer.toLowerCase() === userAnswer.toLowerCase();
-
+export const Question = ({ item, onUserAnswer }) => {
   const handleInputChange = e => {
-    // const userAnswers = [];
-    // userAnswers.push(e.target.value);
-
-    onUserAnswer( e.target.value );
-
-    onChangeIsFilled({ [item.id]: !!e.target.value });
+    onUserAnswer({ [item.id]: { ...item, userAnswer: e.target.value } });
   };
-
   return (
     <div>
       {item.question}
       <div>
-        <input onChange={handleInputChange} type="text" />
+        <input
+          onChange={handleInputChange}
+          type="text"
+          value={item.userAnswer}
+        />
       </div>
     </div>
   );
