@@ -4,9 +4,9 @@ import { ProgressBar } from "./ProgressBar/ProgressBar";
 import styles from "./Test.module.css";
 
 const data = [
-  { id: 1, question: "2+2?", answer: 4, userAnswer: "" },
+  { id: 1, question: "Столица России?", answer: "Москва", userAnswer: "" },
   { id: 2, question: "5+5?", answer: 10, userAnswer: "" },
-  { id: 3, question: "20-10?", answer: 10, userAnswer: "" }
+  { id: 3, question: "Столица Франции?", answer: "Париж", userAnswer: "" }
 ];
 
 const initialItems = data.reduce((acc, el) => {
@@ -42,48 +42,50 @@ export const Test = () => {
 
   return (
     <div className={styles.container}>
-      {!isPassed ? (
-        <>
-          <ProgressBar progress={allAnswersWidth} step={step} />
-          {data.map((d, idx) => (
-            <>
-              {idx === step && (
-                <Question
-                  onUserAnswer={handleGetUserAnswer}
-                  item={defineCurrentItem(d)}
-                />
-              )}
-            </>
-          ))}
-
-          {!!step && <button onClick={handleDecrease}>Назад</button>}
-          {step !== data.length - 1 && (
-            <button onClick={handleIncrease}>Вперед</button>
-          )}
-        </>
-      ) : (
-        <div>
-          {data.map(d => {
-            const currentItem = defineCurrentItem(d);
-            const textPrefix = `Ваш ответ: ${currentItem.userAnswer}, `;
-            const isRight = currentItem.answer == currentItem.userAnswer;
-            return (
-              <div>
-                <div> {currentItem.question} </div>
-                <div className={isRight ? styles.right : styles.wrong}>
-                  {textPrefix}
-                  {isRight
-                    ? "правильно"
-                    : `не правильно, правильный ответ ${currentItem.answer}`}
-                </div>
+      <div className={styles.testWrapper}>
+        {!isPassed ? (
+          <>
+            <ProgressBar progress={allAnswersWidth} step={step} />
+            {data.map((d, idx) => (
+              <div key={idx}>
+                {idx === step && (
+                  <Question
+                    onUserAnswer={handleGetUserAnswer}
+                    item={defineCurrentItem(d)}
+                  />
+                )}
               </div>
-            );
-          })}
-        </div>
-      )}
-      {isAllQuestionsAnswer && (
-        <button onClick={handlePassTest}>Проверить ответы</button>
-      )}
+            ))}
+
+            {!!step && <button onClick={handleDecrease}>Назад</button>}
+            {step !== data.length - 1 && (
+              <button onClick={handleIncrease}>Вперед</button>
+            )}
+          </>
+        ) : (
+          <div className={styles.total}>
+            {data.map((d, indx) => {
+              const currentItem = defineCurrentItem(d);
+              const textPrefix = `Ваш ответ: ${currentItem.userAnswer}, `;
+              const isRight = currentItem.answer == currentItem.userAnswer;
+              return (
+                <div key={indx}>
+                  <div> {currentItem.question} </div>
+                  <div className={isRight ? styles.right : styles.wrong}>
+                    {textPrefix}
+                    {isRight
+                      ? "правильно"
+                      : `не правильно, правильный ответ ${currentItem.answer}`}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        {isAllQuestionsAnswer && (
+          <button onClick={handlePassTest}>Проверить ответы</button>
+        )}
+      </div>
     </div>
   );
 };

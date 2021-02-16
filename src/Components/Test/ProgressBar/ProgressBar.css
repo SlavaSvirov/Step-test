@@ -10,12 +10,12 @@
 
 .progress-bar {
   height: 100%;
-  background-color: #ccdce0;
+  background-color: #86a599;
   border-radius: 10px;
   transition: width 0.5s ease-in-out;
 }
 
 .label {
-  color: black;
+  color: white;
   text-align: right;
 }
