@@ -5,8 +5,8 @@ import styles from "./Test.module.css";
 
 const data = [
   { id: 1, question: "Столица России?", answer: "Москва", userAnswer: "" },
-  { id: 2, question: "5+5?", answer: 10, userAnswer: "" },
-  { id: 3, question: "Столица Франции?", answer: "Париж", userAnswer: "" }
+  { id: 2, question: "5+5?", answer: "10", userAnswer: "" },
+  { id: 3, question: "Столица Франции?", answer: "Париж", userAnswer: "" },
 ];
 
 const initialItems = data.reduce((acc, el) => {
@@ -20,20 +20,20 @@ export const Test = () => {
   const [isPassed, setIsPassed] = React.useState(false);
   const [completed, setCompleted] = React.useState(0);
 
-  const handleIncrease = () => setStep(prevStep => prevStep + 1);
-  const handleDecrease = () => setStep(prevStep => prevStep - 1);
+  const handleIncrease = () => setStep((prevStep) => prevStep + 1);
+  const handleDecrease = () => setStep((prevStep) => prevStep - 1);
   const handlePassTest = () => setIsPassed(true);
 
-  const handleGetUserAnswer = userAnswer => {
+  const handleGetUserAnswer = (userAnswer) => {
     setItems({ ...items, ...userAnswer });
   };
 
-  const defineCurrentItem = d => {
+  const defineCurrentItem = (d) => {
     return items[d.id];
   };
 
   const isAllQuestionsAnswer = Object.keys(items).every(
-    item => !!items[item].userAnswer
+    (item) => !!items[item].userAnswer
   );
 
   const allAnswersWidth = Object.keys(items).reduce((acc, item) => {
@@ -67,7 +67,9 @@ export const Test = () => {
             {data.map((d, indx) => {
               const currentItem = defineCurrentItem(d);
               const textPrefix = `Ваш ответ: ${currentItem.userAnswer}, `;
-              const isRight = currentItem.answer == currentItem.userAnswer;
+              const isRight =
+                currentItem.answer.toLowerCase() ===
+                currentItem.userAnswer.toLowerCase();
               return (
                 <div key={indx}>
                   <div> {currentItem.question} </div>
@@ -89,5 +91,3 @@ export const Test = () => {
     </div>
   );
 };
-
-// После того, как пользователь ответит на все вопросы, должна появится кнопочка 'проверить ответы'. По нажатию на эту кнопочку нужно вывести все вопросы на экран, под вопросами должно быть следующее: 'ваш ответ такой-то, правильно' или 'ваш ответ такой-то, не правильно, правильный ответ такой-то'. Правильные ответы должны быть зеленого цвета, а неправильные - красного.
