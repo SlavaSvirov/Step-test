@@ -18,7 +18,13 @@ const data = [
     answer: "Бугагашенька",
     userAnswer: "",
   },
-  { id: 3, question: "Столица Франции?", answer: "Париж", userAnswer: "" },
+  {
+    id: 3,
+    question:
+      "Краткое содержании игры Шелдона: камень, ножницы, бумага, ... , спок?",
+    answer: "Ящерица",
+    userAnswer: "",
+  },
 ];
 
 const initialItems = data.reduce((acc, el) => {
@@ -105,7 +111,7 @@ export const Test = () => {
               Пройти заново
             </button>
 
-            <div>Тем более все ответы ты уже знаешь Андрейка!</div>
+            <div>Тем более все ответы ты уже знаешь!</div>
           </div>
         )}
       </div>
