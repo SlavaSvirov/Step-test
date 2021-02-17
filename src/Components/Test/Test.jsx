@@ -4,8 +4,20 @@ import { ProgressBar } from "./ProgressBar/ProgressBar";
 import styles from "./Test.module.css";
 
 const data = [
-  { id: 1, question: "Столица России?", answer: "Москва", userAnswer: "" },
-  { id: 2, question: "5+5?", answer: "10", userAnswer: "" },
+  {
+    id: 1,
+    question:
+      "Какого цвета был горн, который украл Тед Мосби в сериале 'Как я встретил вашу маму'?",
+    answer: "Синий",
+    userAnswer: "",
+  },
+  {
+    id: 2,
+    question:
+      "Коронная фраза Шелдона Купера, из сериала 'Теория большого взрыва', в переводе Кураж-Бамбей?",
+    answer: "Бугагашенька",
+    userAnswer: "",
+  },
   { id: 3, question: "Столица Франции?", answer: "Париж", userAnswer: "" },
 ];
 
@@ -18,7 +30,6 @@ export const Test = () => {
   const [step, setStep] = React.useState(0);
   const [items, setItems] = React.useState(initialItems);
   const [isPassed, setIsPassed] = React.useState(false);
-  const [completed, setCompleted] = React.useState(0);
 
   const handleIncrease = () => setStep((prevStep) => prevStep + 1);
   const handleDecrease = () => setStep((prevStep) => prevStep - 1);
@@ -40,6 +51,11 @@ export const Test = () => {
     return items[item].userAnswer ? acc + questionWidth : acc;
   }, 0);
 
+  const handleReset = () => {
+    setStep(0);
+    setItems(initialItems);
+    setIsPassed(false);
+  };
   return (
     <div className={styles.container}>
       <div className={styles.testWrapper}>
@@ -60,6 +76,9 @@ export const Test = () => {
             {!!step && <button onClick={handleDecrease}>Назад</button>}
             {step !== data.length - 1 && (
               <button onClick={handleIncrease}>Вперед</button>
+            )}
+            {isAllQuestionsAnswer && (
+              <button onClick={handlePassTest}>Проверить ответы</button>
             )}
           </>
         ) : (
@@ -82,10 +101,12 @@ export const Test = () => {
                 </div>
               );
             })}
+            <button onClick={handleReset} className={styles.resetBtn}>
+              Пройти заново
+            </button>
+
+            <div>Тем более все ответы ты уже знаешь Андрейка!</div>
           </div>
-        )}
-        {isAllQuestionsAnswer && (
-          <button onClick={handlePassTest}>Проверить ответы</button>
         )}
       </div>
     </div>

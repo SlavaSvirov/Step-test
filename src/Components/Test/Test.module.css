@@ -28,8 +28,11 @@ button:focus {
 
 button:hover {
   background-color: #86a599;
-  border: 0.5px solid rgb(161, 155, 155);
+
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.resetBtn {
+  margin-top: 10px;
 }
 .right {
   color: green;
